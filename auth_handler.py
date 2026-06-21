@@ -72,7 +72,7 @@ def logout(token: str, token_store: dict[str, float] | None = None) -> bool:
 def _generate_token(username: str) -> str:
     """Generate a simple session token."""
     raw = f"{username}:{time.time()}:{os.urandom(16).hex()}"
-    return raw.hex() if isinstance(raw, str) else raw
+    return raw
 
 
 def validate_token(token: str, token_store: dict[str, float] | None = None) -> dict[str, Any]:
