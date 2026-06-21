@@ -3,6 +3,7 @@ import ast
 import tokenize
 import io
 from ..core.state_machine import project_state, TaskState
+from ..core.multilang_audit import audit_multi_lang
 
 
 class CodeAuditor(ast.NodeVisitor):
@@ -137,9 +138,16 @@ def execute(task_id: str, file_paths: list[str], log_func=None) -> dict:
             continue
 
         if not file_path.endswith(".py"):
-            file_result["audit_passed"] = True
-            file_result["message"] = "Non-Python file, skipped AST audit"
+            ml_result = audit_multi_lang(abs_path)
+            file_result["audit_passed"] = ml_result["audit_passed"]
+            file_result["errors"] = ml_result["errors"]
+            file_result["language"] = ml_result.get("language", "unknown")
+            if ml_result["audit_passed"]:
+                file_result["message"] = f"Multi-language audit passed ({ml_result.get('language', 'unknown')})"
+            else:
+                file_result["message"] = f"Multi-language audit failed ({ml_result.get('language', 'unknown')})"
             file_results.append(file_result)
+            all_errors.extend(ml_result["errors"])
             continue
 
         try:

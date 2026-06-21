@@ -1,0 +1,109 @@
+name: Verdict QA Gate
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+  workflow_dispatch:
+
+jobs:
+  verdict-audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install Verdict
+        run: |
+          pip install -r requirements.txt
+          pip install pytest-cov
+
+      - name: Initialize Plan
+        run: |
+          python -c "
+          from verdict_mcp.core.state_machine import project_state
+          from verdict_mcp.resources.master_plan import load_plan_into_state
+          result = load_plan_into_state('plan.md')
+          print(f'Plan initialized: {result[\"task_count\"]} tasks')
+          "
+
+      - name: AST Audit All Tasks
+        run: |
+          python -c "
+          from verdict_mcp.core.state_machine import project_state, TaskState
+          from verdict_mcp.resources.master_plan import load_plan_into_state
+          from verdict_mcp.tools import audit_task
+          load_plan_into_state('plan.md')
+          
+          TASK_FILES = {
+              'TASK_001': ['auth_handler.py'],
+              'TASK_002': ['main_window.py'],
+              'TASK_003': ['db_handler.py'],
+              'TASK_004': ['tests/test_auth_handler.py'],
+          }
+          
+          for tid, files in TASK_FILES.items():
+              dep = project_state.get_task(tid).dependencies
+              for d in dep:
+                  if project_state.get_task(d).state != TaskState.COMPLETED:
+                      project_state.get_task(d).state = TaskState.COMPLETED
+              
+              result = audit_task.execute(tid, files)
+              status = 'PASSED' if result['success'] else 'FAILED'
+              print(f'[{status}] {tid}: {result[\"task_title\"]} ({len(result.get(\"file_results\",[]))} files)')
+              if not result['success']:
+                  for f in result.get('file_results',[]):
+                      for e in f.get('errors',[]):
+                          print(f'  - {e}')
+                      exit(1)
+          "
+
+      - name: UI Standards Check
+        run: |
+          python -c "
+          from verdict_mcp.tools import enforce_ui
+          result = enforce_ui.execute('main_window.py')
+          print(f'UI Score: {result[\"score\"]}%')
+          print(f'Errors: {len(result.get(\"errors\",[]))}')
+          if not result['success']:
+              for e in result.get('errors',[]):
+                  print(f'  - {e}')
+              exit(1)
+          "
+
+      - name: Run Tests with Coverage
+        run: |
+          python -c "
+          from verdict_mcp.core.sandbox import run_pytest_with_coverage, run_mutation_testing
+          import os
+          
+          project = os.getcwd()
+          cov = run_pytest_with_coverage(
+              os.path.join(project, 'tests', 'test_auth_handler.py'),
+              os.path.join(project, 'auth_handler.py'),
+              project
+          )
+          print(f'Coverage: {cov[\"coverage\"]}%')
+          
+          if cov['success']:
+              mut = run_mutation_testing(
+                  os.path.join(project, 'tests', 'test_auth_handler.py'),
+                  os.path.join(project, 'auth_handler.py'),
+                  project
+              )
+              print(f'Mutation Score: {mut[\"mutation_score\"]}%')
+          
+          if not cov['success']:
+              print(f'FAILED: {cov.get(\"error\",\"\")}')
+              exit(1)
+          elif mut.get('mutation_score', 0) < 80:
+              print(f'FAILED: Mutation score {mut[\"mutation_score\"]}% < 80%')
+              exit(1)
+          else:
+              print('ALL CHECKS PASSED')
+          "
