@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="400" height="400">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0a0a0f;stop-opacity:1"/>
+      <stop offset="100%" style="stop-color:#12121e;stop-opacity:1"/>
+    </linearGradient>
+    <linearGradient id="shieldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#00f0ff;stop-opacity:1"/>
+      <stop offset="100%" style="stop-color:#ff00ff;stop-opacity:1"/>
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="4" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <filter id="glass">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="0"/>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="400" height="400" fill="url(#bg)" rx="40"/>
+
+  <!-- Glassmorphic card background -->
+  <rect x="40" y="40" width="320" height="320" rx="30" fill="rgba(18,18,30,0.5)" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+
+  <!-- Shield shape -->
+  <path d="M200 60 L310 110 L310 210 C310 280 260 330 200 350 C140 330 90 280 90 210 L90 110 Z"
+        fill="none" stroke="url(#shieldGrad)" stroke-width="6" filter="url(#glow)"/>
+
+  <!-- Checkmark inside shield -->
+  <path d="M160 200 L190 230 L245 170" fill="none" stroke="#00ff88" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" filter="url(#glow)"/>
+
+  <!-- DNA/Code helix decoration -->
+  <path d="M80 280 Q120 260 160 280 Q200 300 240 280 Q280 260 320 280"
+        fill="none" stroke="rgba(0,240,255,0.3)" stroke-width="2"/>
+  <path d="M80 295 Q120 315 160 295 Q200 275 240 295 Q280 315 320 295"
+        fill="none" stroke="rgba(255,0,255,0.3)" stroke-width="2"/>
+
+  <!-- Text -->
+  <text x="200" y="140" text-anchor="middle" fill="#00f0ff" font-family="'Segoe UI', Arial, sans-serif" font-size="48" font-weight="700" letter-spacing="6" filter="url(#glow)">V</text>
+  <text x="200" y="390" text-anchor="middle" fill="rgba(240,240,245,0.6)" font-family="'Segoe UI', Arial, sans-serif" font-size="14" font-weight="400" letter-spacing="3">GATEKEEPER</text>
+</svg>

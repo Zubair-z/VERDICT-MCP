@@ -1,0 +1,18 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "mcp": {
+    "verdict": {
+      "type": "local",
+      "command": ["python", "-m", "verdict_mcp"],
+      "enabled": true
+    }
+  },
+  "verdict": {
+    "plan_file": "plan.md",
+    "coverage_threshold": 95,
+    "mutation_threshold": 80,
+    "auto_snapshot": true,
+    "ui_validation": true,
+    "multi_language": true
+  }
+}
