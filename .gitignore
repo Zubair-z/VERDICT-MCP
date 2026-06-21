@@ -19,3 +19,13 @@ Thumbs.db
 # Coverage
 .coverage
 htmlcov/
+.cov.json
+
+# Backups
+*.backup
+*.mutant
+
+# VS Code extension (keep the source, ignore node_modules if any)
+.vscode-extension/node_modules/
+.vscode-extension/.vscode-test/
+.vscode-extension/*.vsix

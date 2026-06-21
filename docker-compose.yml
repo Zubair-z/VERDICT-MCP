@@ -1,0 +1,20 @@
+services:
+  verdict-mcp:
+    build: .
+    container_name: verdict-mcp
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app
+    environment:
+      - VERDICT_PLAN_PATH=/app/plan.md
+    command: python -m verdict_mcp.api_server
+
+  verdict-mcp-stdio:
+    build: .
+    container_name: verdict-mcp-stdio
+    volumes:
+      - .:/app
+    stdin_open: true
+    tty: true
+    command: python -m verdict_mcp

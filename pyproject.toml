@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "verdict-mcp"
-version = "0.1.0"
+version = "0.2.0"
 description = "An unbypassable MCP gatekeeper that enforces code completeness, test coverage, and premium UI/UX standards on autonomous AI agents"
 readme = "README.md"
 license = {text = "MIT"}
@@ -13,11 +13,48 @@ dependencies = [
     "mcp>=1.0.0",
     "pyyaml>=6.0",
     "coverage>=7.0",
+    "fastapi>=0.110.0",
+    "uvicorn>=0.29.0",
+    "pydantic>=2.0.0",
 ]
 
 [project.urls]
-Homepage = "https://github.com/yourusername/verdict-mcp"
-Source = "https://github.com/yourusername/verdict-mcp"
+Homepage = "https://github.com/Zubair-z/VERDICT-MCP"
+Source = "https://github.com/Zubair-z/VERDICT-MCP"
+
+[project.scripts]
+verdict = "verdict_mcp.cli:main"
 
 [tool.setuptools.packages.find]
 include = ["verdict_mcp*"]
+
+[tool.black]
+line-length = 100
+target-version = ["py311", "py312", "py313"]
+include = '\.pyi?$'
+extend-exclude = '''
+/(
+    \.git
+    | __pycache__
+    | \.mypy_cache
+    | \.pytest_cache
+)/
+'''
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "N", "W", "D", "B", "SIM", "ARG", "C4", "RUF"]
+ignore = ["D100", "D104", "D107", "D203", "D212", "D213", "D402", "D415"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = ["D"]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"

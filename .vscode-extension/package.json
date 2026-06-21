@@ -1,0 +1,85 @@
+{
+  "name": "verdict-mcp",
+  "displayName": "Verdict MCP",
+  "description": "Code quality gatekeeper for AI-generated code — AST audit, UI validation, test coverage",
+  "version": "0.1.0",
+  "publisher": "verdict-mcp",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Zubair-z/VERDICT-MCP"
+  },
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "Linters",
+    "Testing",
+    "Other"
+  ],
+  "keywords": [
+    "verdict",
+    "code quality",
+    "ai agent",
+    "audit",
+    "coverage",
+    "mutation testing"
+  ],
+  "icon": "icon.png",
+  "activationEvents": [
+    "onLanguage:python",
+    "onLanguage:javascript",
+    "onLanguage:typescript",
+    "onCommand:verdict.runAudit",
+    "onCommand:verdict.runPipeline",
+    "onStartupFinished"
+  ],
+  "main": "./extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "verdict.runAudit",
+        "title": "Verdict: Run Audit on Current File"
+      },
+      {
+        "command": "verdict.runPipeline",
+        "title": "Verdict: Run Full Pipeline (Audit → UI → Tests)"
+      },
+      {
+        "command": "verdict.showReport",
+        "title": "Verdict: Show Last Report"
+      },
+      {
+        "command": "verdict.initProject",
+        "title": "Verdict: Initialize New Project"
+      }
+    ],
+    "configuration": {
+      "title": "Verdict",
+      "properties": {
+        "verdict.apiUrl": {
+          "type": "string",
+          "default": "http://localhost:8000",
+          "description": "Verdict REST API URL"
+        },
+        "verdict.planPath": {
+          "type": "string",
+          "default": "plan.md",
+          "description": "Path to plan.md relative to workspace root"
+        },
+        "verdict.autoAuditOnSave": {
+          "type": "boolean",
+          "default": false,
+          "description": "Automatically run audit on file save"
+        }
+      }
+    },
+    "keybindings": [
+      {
+        "command": "verdict.runAudit",
+        "key": "ctrl+shift+v",
+        "when": "editorTextFocus"
+      }
+    ]
+  }
+}
