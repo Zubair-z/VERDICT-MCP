@@ -1,0 +1,23 @@
+[build-system]
+requires = ["setuptools>=68.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "verdict-mcp"
+version = "0.1.0"
+description = "An unbypassable MCP gatekeeper that enforces code completeness, test coverage, and premium UI/UX standards on autonomous AI agents"
+readme = "README.md"
+license = {text = "MIT"}
+requires-python = ">=3.11"
+dependencies = [
+    "mcp>=1.0.0",
+    "pyyaml>=6.0",
+    "coverage>=7.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/yourusername/verdict-mcp"
+Source = "https://github.com/yourusername/verdict-mcp"
+
+[tool.setuptools.packages.find]
+include = ["verdict_mcp*"]

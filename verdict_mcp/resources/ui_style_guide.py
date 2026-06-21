@@ -1,0 +1,132 @@
+DESIGN_TOKENS = {
+    "theme": {
+        "mode": "dark",
+        "base": "#0a0a0f",
+        "surface": "#12121e",
+        "surface_alt": "#1a1a2e",
+        "border": "#2a2a3e",
+    },
+    "colors": {
+        "primary": "#00f0ff",
+        "primary_dim": "#00b8c4",
+        "secondary": "#ff00ff",
+        "secondary_dim": "#c400c4",
+        "accent": "#ff6b35",
+        "success": "#00ff88",
+        "warning": "#ffd700",
+        "error": "#ff3355",
+        "text_primary": "#f0f0f5",
+        "text_secondary": "#8888aa",
+        "text_disabled": "#555566",
+    },
+    "glassmorphism": {
+        "enabled": True,
+        "background": "rgba(18, 18, 30, 0.75)",
+        "border": "rgba(255, 255, 255, 0.08)",
+        "blur": "18px",
+        "saturate": "180%",
+    },
+    "spacing": {
+        "xs": "4px",
+        "sm": "8px",
+        "md": "16px",
+        "lg": "24px",
+        "xl": "32px",
+        "xxl": "48px",
+        "section": "24px",
+        "element": "16px",
+    },
+    "border_radius": {
+        "sm": "6px",
+        "md": "8px",
+        "lg": "12px",
+        "xl": "16px",
+        "pill": "24px",
+        "card": "12px",
+        "button": "8px",
+        "input": "8px",
+    },
+    "typography": {
+        "font_family": '"Segoe UI", -apple-system, BlinkMacSystemFont, sans-serif',
+        "font_mono": '"Cascadia Code", "Fira Code", "JetBrains Mono", monospace',
+        "size_xs": "11px",
+        "size_sm": "12px",
+        "size_md": "14px",
+        "size_lg": "16px",
+        "size_xl": "20px",
+        "size_xxl": "24px",
+        "size_display": "32px",
+        "weight_normal": "400",
+        "weight_semibold": "600",
+        "weight_bold": "700",
+    },
+    "shadows": {
+        "sm": "0 2px 8px rgba(0, 0, 0, 0.3)",
+        "md": "0 4px 16px rgba(0, 0, 0, 0.4)",
+        "lg": "0 8px 32px rgba(0, 0, 0, 0.5)",
+        "glow_primary": "0 0 20px rgba(0, 240, 255, 0.3)",
+        "glow_secondary": "0 0 20px rgba(255, 0, 255, 0.3)",
+    },
+    "transitions": {
+        "fast": "150ms ease",
+        "normal": "250ms ease",
+        "slow": "400ms ease",
+    },
+    "layout": {
+        "max_width": "1200px",
+        "sidebar_width": "280px",
+        "header_height": "56px",
+        "grid_gap": "16px",
+    },
+    "pyside6_specific": {
+        "stylesheet_required": True,
+        "qwidget_radius": "12px",
+        "qpushbutton_radius": "8px",
+        "qlineedit_radius": "8px",
+        "qscrollbar_width": "8px",
+        "qscrollbar_radius": "4px",
+        "disable_native_style": True,
+        "use_fusion_style": True,
+    },
+}
+
+STYLE_REQUIREMENTS = [
+    "QWidget {",
+    "QMainWindow {",
+    "background-color: #0a0a0f",
+    "border-radius: 12px",
+    "QPushButton {",
+    "QLineEdit {",
+    "QLabel { color: #f0f0f5",
+    "#00f0ff",
+    "#ff00ff",
+    "rgba(",
+    "backdrop-filter",
+    "QScrollBar",
+    "QComboBox",
+    "QTableWidget",
+]
+
+ESSENTIAL_STYLE_PATTERNS = [
+    r"background-color:\s*#[0-9a-fA-F]{6}",
+    r"color:\s*#[0-9a-fA-F]{6}",
+    r"border-radius:\s*\d+px",
+    r"rgba\s*\(",
+    r"QWidget\s*\{",
+    r"QPushButton\s*\{",
+]
+
+
+def get_style_guide() -> dict:
+    return {
+        "design_tokens": DESIGN_TOKENS,
+        "style_requirements": STYLE_REQUIREMENTS,
+        "essential_patterns": ESSENTIAL_STYLE_PATTERNS,
+        "summary": {
+            "theme": "Dark Glassmorphism with Neon Accents",
+            "primary_rule": "All UI components MUST use custom stylesheets — no default/native styles",
+            "glassmorphism_rule": "Cards and panels MUST use rgba backgrounds with backdrop-filter blur",
+            "color_rule": "Use #00f0ff (cyan) for primary interactive elements, #ff00ff (magenta) for accents",
+            "spacing_rule": "Follow the spacing token system (xs=4px through xxl=48px)",
+        }
+    }
